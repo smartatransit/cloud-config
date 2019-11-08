@@ -1,5 +1,6 @@
 terraform {
   required_providers {
+    docker     = "~> 5.0"
     null       = "~> 2.1"
     postgresql = "~> 1.3"
     template   = "~> 2.1"
