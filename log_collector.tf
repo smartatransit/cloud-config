@@ -20,13 +20,13 @@ resource "docker_service" "log-collector" {
       mounts {
         target = "/var/run/docker.sock"
         source = "/var/run/docker.sock"
-        type   = "volume"
+        type   = "bind"
       }
 
       mounts {
         target = "/var/lib/docker/containers"
         source = "/var/lib/docker/containers"
-        type   = "volume"
+        type   = "bind"
       }
     }
   }
