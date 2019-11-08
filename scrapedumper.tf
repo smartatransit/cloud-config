@@ -101,14 +101,15 @@ resource "docker_service" "run_reaper" {
     container_spec {
       image = "smartatransit/scrapereaper:${data.docker_registry_image.scrapereaper.sha256_digest}"
 
-      labels {
-        label = "swarm.cronjob.enable"
-        value = "true"
-      }
-      labels {
-        label = "swarm.cronjob.schedule"
-        value = "0 3 * * *"
-      }
+      #TODO:
+      # labels {
+      #   label = "swarm.cronjob.enable"
+      #   value = "true"
+      # }
+      # labels {
+      #   label = "swarm.cronjob.schedule"
+      #   value = "0 3 * * *"
+      # }
 
       env = {
         POSTGRES_CONNECTION_STRING = local.pg_connection_string
