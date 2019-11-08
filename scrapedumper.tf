@@ -60,9 +60,7 @@ resource "docker_service" "scrapedumper" {
         POLL_TIME_IN_SECONDS = "15"
         CONFIG_PATH          = "/config.yaml"
         PGPASSFILE           = "/run/secrets/scrapedumper_postgres_password"
-
-        #TODO ADD THIS OPTION TO THE IMAGE:
-        MARTA_API_KEY_FILE = "/run/secrets/marta_api_key"
+        MARTA_API_KEY_FILE   = "/run/secrets/marta_api_key"
       }
 
       mounts {
@@ -95,15 +93,14 @@ resource "docker_service" "run_reaper" {
     container_spec {
       image = "smartatransit/scrapedumper-reaper:production"
 
-      # TODO
-      # labels {
-      #   label = "swarm.cronjob.enable"
-      #   value = "true"
-      # }
-      # labels {
-      #   label = "swarm.cronjob.schedule"
-      #   value = "0 3 * * *"
-      # }
+      labels {
+        label = "swarm.cronjob.enable"
+        value = "true"
+      }
+      labels {
+        label = "swarm.cronjob.schedule"
+        value = "0 3 * * *"
+      }
 
       env = {
         POSTGRES_CONNECTION_STRING = local.pg_connection_string
@@ -118,12 +115,5 @@ resource "docker_service" "run_reaper" {
     }
 
     networks = [docker_network.postgres.id]
-  }
-
-  mode {
-    replicated {
-      # TODO
-      replicas = 0
-    }
   }
 }

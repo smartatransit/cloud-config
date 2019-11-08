@@ -45,10 +45,7 @@ resource "docker_service" "postgres" {
 
   task_spec {
     container_spec {
-      # TODO fix flippy-floppy
       image = "postgres:9.6"
-
-      # TODO enable ssl?
 
       env = {
         PGDATA                 = "/var/lib/postgresql/data/pgdata"
