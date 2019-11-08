@@ -19,14 +19,14 @@ provider "docker" {
   key_material  = base64decode(var.docker_key_material)
 }
 
-resource "docker_service" "swarm-cron" {
-  name = "swarm-cron"
+resource "docker_service" "cron-manager" {
+  name = "cron-manager"
 
   task_spec {
     container_spec {
       image = "crazymax/swarm-cronjob:fbf8bae8"
 
-      env {
+      env = {
         TZ = "US/Eastern"
       }
 
@@ -36,9 +36,9 @@ resource "docker_service" "swarm-cron" {
         type   = "volume"
       }
     }
-  }
 
-  placement {
-    constraints = ["node.role==manager"]
+    placement {
+      constraints = ["node.role==manager"]
+    }
   }
 }
