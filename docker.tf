@@ -33,7 +33,7 @@ resource "docker_service" "cron-manager" {
       mounts {
         target = "/var/run/docker.sock"
         source = "/var/run/docker.sock"
-        type   = "volume"
+        type   = "bind"
       }
     }
 

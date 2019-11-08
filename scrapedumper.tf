@@ -66,7 +66,7 @@ resource "docker_service" "scrapedumper" {
       mounts {
         target = "/config.yaml"
         source = module.scrapedumper_config.destination
-        type   = "volume"
+        type   = "bind"
       }
 
       secrets {
