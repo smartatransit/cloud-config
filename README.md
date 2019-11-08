@@ -7,7 +7,7 @@ When you're done, push your branch and open a pull request against the `master` 
 
 If drift or manual intervention has changed the state from what `master` said it should be, this may include more changes than you intended, as Terraform attempts to bring things back into line. One common example you may see is that a Docker service in production is marked with an image tag like `smartatransit/scrapedumper:398urf9uei`, and terraform wants to change it back to something like `smartatransit/scrapedumper:production`, using the human-readable name it sees in the TF configuration. These sorts of changes are generally harmless. If you see something in the Terraform plan that you don't understand, consider reaching out to another team member familiar with the affected area before proceeding.
 
-When you're confident that the Terraform plan describes what you want it to, you're ready to merge your pull request to master. Merging will trigger another build in the Terraform Cloud workspace, this time running the `terraform apply` command rather than `terraform plan`. If all goes well, the result will be your service deployed successfully to the host.
+When you're confident that the Terraform plan describes what you want it to, you're ready to merge your pull request to master. Merging will trigger another plan which you can find in the Terraform Cloud workspace. This time, at the bottom of the page you'll find the option to _confirm_ and _apply_ the changes. If all goes well, the result will be your changed successfully deployed to the host.
 
 ## Example
 

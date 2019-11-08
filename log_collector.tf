@@ -37,15 +37,3 @@ resource "docker_service" "log-collector" {
     }
   }
 }
-
-resource "docker_service" "log-tester" {
-  name = "log-tester"
-
-  task_spec {
-    container_spec {
-      image = "alpine"
-
-      command = ["sh", "-c", "while true; do echo 'This is a test of the log collector'; sleep 5; done"]
-    }
-  }
-}
