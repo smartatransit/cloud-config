@@ -5,12 +5,16 @@ variable "logzio_url" {
   type = "string"
 }
 
+data "docker_registry_image" "log-collector" {
+  name = "logzio/docker-collector-logs:0.0.4"
+}
+
 resource "docker_service" "log-collector" {
   name = "log-collector"
 
   task_spec {
     container_spec {
-      image = "logzio/docker-collector-logs:0.0.4"
+      image = "logzio/docker-collector-logs:${data.docker_registry_image.log-collector.sha256_digest}"
 
       env = {
         LOGZIO_TOKEN = var.logzio_token

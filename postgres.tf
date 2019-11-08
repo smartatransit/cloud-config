@@ -40,12 +40,16 @@ resource "docker_network" "postgres" {
   driver = "overlay"
 }
 
+data "docker_registry_image" "postgres" {
+  name = "postgres:9.6"
+}
+
 resource "docker_service" "postgres" {
   name = "postgres"
 
   task_spec {
     container_spec {
-      image = "postgres:9.6"
+      image = "postgres:${data.docker_registry_image.postgres.sha256_digest}"
 
       env = {
         PGDATA                 = "/var/lib/postgresql/data/pgdata"

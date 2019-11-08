@@ -47,6 +47,10 @@ module "scrapedumper_config" {
   key_material = var.terraform_host_user_key_material
 }
 
+data "docker_registry_image" "log-collector" {
+  name = "smartatransit/scrapedumper:production"
+}
+
 resource "docker_service" "scrapedumper" {
   depends_on = [module.scrapedumper_config]
 
@@ -54,7 +58,7 @@ resource "docker_service" "scrapedumper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper:production"
+      image = "smartatransit/scrapedumper:${data.docker_registry_image.postgres.sha256_digest}"
 
       env = {
         POLL_TIME_IN_SECONDS = "15"
@@ -86,12 +90,16 @@ resource "docker_service" "scrapedumper" {
   }
 }
 
+data "docker_registry_image" "run_reaper" {
+  name = "smartatransit/scrapereaper:production"
+}
+
 resource "docker_service" "run_reaper" {
   name = "run_reaper"
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper-reaper:production"
+      image = "smartatransit/scrapereaper:${data.docker_registry_image.scrapereaper.sha256_digest}"
 
       labels {
         label = "swarm.cronjob.enable"
