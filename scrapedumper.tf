@@ -37,14 +37,14 @@ module "scrapedumper_config" {
   source = "./modules/host-file"
 
   template_name = "scrapedumper.yaml"
-  destination   = "/TODO/scrapedumper.yaml"
+  destination   = var.terraform_host_user_artifacts_root
   vars = {
     pg_connection_string = local.pg_connection_string
   }
 
   host         = var.docker_host
-  user         = "TODO"
-  key_material = "TODO"
+  user         = var.terraform_host_user
+  key_material = var.terraform_host_user_key_material
 }
 
 resource "docker_service" "scrapedumper" {

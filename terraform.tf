@@ -15,3 +15,15 @@ terraform {
     }
   }
 }
+
+variable "terraform_host_user" {
+  type    = string
+  default = "terraform"
+}
+variable "terraform_host_user_key_material" {
+  type = string
+}
+variable "terraform_host_user_artifacts_root" {
+  type    = string
+  default = "/home/${var.terraform_host_user}/data"
+}
