@@ -18,3 +18,27 @@ provider "docker" {
   cert_material = base64decode(var.docker_cert_material)
   key_material  = base64decode(var.docker_key_material)
 }
+
+resource "docker_service" "cron-manager" {
+  name = "cron-manager"
+
+  task_spec {
+    container_spec {
+      image = "crazymax/swarm-cronjob:fbf8bae8"
+
+      env = {
+        TZ = "US/Eastern"
+      }
+
+      mounts {
+        target = "/var/run/docker.sock"
+        source = "/var/run/docker.sock"
+        type   = "bind"
+      }
+    }
+
+    placement {
+      constraints = ["node.role==manager"]
+    }
+  }
+}
