@@ -1,3 +1,3 @@
 output "digest" {
-  value = docker_image.image.latest
+  value = split(":", docker_image.image.latest)[1]
 }
