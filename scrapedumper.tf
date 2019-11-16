@@ -58,7 +58,7 @@ resource "docker_service" "scrapedumper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper:${data.docker_registry_image.scrapedumper.sha256_digest}"
+      image = "smartatransit/scrapedumper:${split(":", data.docker_registry_image.scrapedumper.sha256_digest)[1]}"
 
       env = {
         POLL_TIME_IN_SECONDS = "15"
@@ -99,7 +99,7 @@ resource "docker_service" "scrapereaper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapereaper:${data.docker_registry_image.scrapereaper.sha256_digest}"
+      image = "smartatransit/scrapereaper:${split(":", data.docker_registry_image.scrapereaper.sha256_digest)[1]}"
 
       labels {
         label = "swarm.cronjob.enable"
