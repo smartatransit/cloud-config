@@ -16,7 +16,7 @@ resource "null_resource" "file" {
     type        = "ssh"
     host        = var.host
     user        = var.user
-    private_key = var.key_material
+    private_key = base64decode(var.key_material)
   }
 
   provisioner "file" {
