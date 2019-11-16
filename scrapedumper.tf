@@ -47,8 +47,8 @@ module "scrapedumper_config" {
   key_material = var.terraform_host_user_key_material
 }
 
-data "docker_registry_image" "log-collector" {
-  name = "smartatransit/scrapedumper:production"
+data "docker_registry_image" "scrapedumper" {
+  name = "smartatransit/scrapedumper:latest"
 }
 
 resource "docker_service" "scrapedumper" {
@@ -58,7 +58,7 @@ resource "docker_service" "scrapedumper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper:${data.docker_registry_image.postgres.sha256_digest}"
+      image = "smartatransit/scrapedumper:${data.docker_registry_image.scrapedumper.sha256_digest}"
 
       env = {
         POLL_TIME_IN_SECONDS = "15"
@@ -90,26 +90,25 @@ resource "docker_service" "scrapedumper" {
   }
 }
 
-data "docker_registry_image" "run_reaper" {
-  name = "smartatransit/scrapereaper:production"
+data "docker_registry_image" "scrapereaper" {
+  name = "smartatransit/scrapereaper:latest"
 }
 
-resource "docker_service" "run_reaper" {
-  name = "run_reaper"
+resource "docker_service" "scrapereaper" {
+  name = "scrapereaper"
 
   task_spec {
     container_spec {
       image = "smartatransit/scrapereaper:${data.docker_registry_image.scrapereaper.sha256_digest}"
 
-      #TODO:
-      # labels {
-      #   label = "swarm.cronjob.enable"
-      #   value = "true"
-      # }
-      # labels {
-      #   label = "swarm.cronjob.schedule"
-      #   value = "0 3 * * *"
-      # }
+      labels {
+        label = "swarm.cronjob.enable"
+        value = "true"
+      }
+      labels {
+        label = "swarm.cronjob.schedule"
+        value = "0 3 * * *"
+      }
 
       env = {
         POSTGRES_CONNECTION_STRING = local.pg_connection_string
