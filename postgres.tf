@@ -49,7 +49,7 @@ resource "docker_service" "postgres" {
 
   task_spec {
     container_spec {
-      image = "postgres:${data.docker_registry_image.postgres.sha256_digest}"
+      image = "postgres:${split(data.docker_registry_image.postgres.sha256_digest)}"
 
       env = {
         PGDATA                 = "/var/lib/postgresql/data/pgdata"
