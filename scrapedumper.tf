@@ -47,8 +47,10 @@ module "scrapedumper_config" {
   key_material = var.terraform_host_user_key_material
 }
 
-data "docker_registry_image" "scrapedumper" {
-  name = "smartatransit/scrapedumper:latest"
+module "scrapedumper_image" {
+  source     = "./modules/docker-image"
+  repository = "smartatransit/scrapedumper"
+  tag        = "latest"
 }
 
 resource "docker_service" "scrapedumper" {
@@ -58,7 +60,7 @@ resource "docker_service" "scrapedumper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper:${split(":", data.docker_registry_image.scrapedumper.sha256_digest)[1]}"
+      image = "smartatransit/scrapedumper:${module.scrapedumper_image.digest}"
 
       env = {
         POLL_TIME_IN_SECONDS = "15"
@@ -90,8 +92,10 @@ resource "docker_service" "scrapedumper" {
   }
 }
 
-data "docker_registry_image" "scrapereaper" {
-  name = "smartatransit/scrapereaper:latest"
+module "scrapereaper_image" {
+  source     = "./modules/docker-image"
+  repository = "smartatransit/scrapereaper"
+  tag        = "latest"
 }
 
 resource "docker_service" "scrapereaper" {
@@ -99,7 +103,7 @@ resource "docker_service" "scrapereaper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapereaper:${split(":", data.docker_registry_image.scrapereaper.sha256_digest)[1]}"
+      image = "smartatransit/scrapereaper:${module.scrapereaper_image.digest}"
 
       labels {
         label = "swarm.cronjob.enable"
