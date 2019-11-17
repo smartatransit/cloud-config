@@ -45,8 +45,7 @@ resource "docker_service" "postgres" {
 
   task_spec {
     container_spec {
-      # postgres:9.6
-      image = "postgres:afd8110f181328444d0f778570657868364ca522fb64e9a9bdbf7b1d60b03792"
+      image = "postgres:9.6"
 
       env = {
         PGDATA                 = "/var/lib/postgresql/data/pgdata"
