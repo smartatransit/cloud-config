@@ -8,11 +8,6 @@ variable "marta_api_key" {
 }
 
 //// SECERTS ////
-resource "docker_secret" "scrapedumper_postgres_password" {
-  name = "scrapedumper_postgres_password"
-  data = base64encode(var.scrapedumper_postgres_password)
-}
-
 resource "docker_secret" "marta_api_key" {
   name = "marta_api_key"
   data = base64encode(var.marta_api_key)
@@ -59,7 +54,7 @@ resource "docker_service" "scrapedumper" {
       env = {
         POLL_TIME_IN_SECONDS = "15"
         CONFIG_PATH          = "/config.yaml"
-        PGPASSFILE           = "/run/secrets/scrapedumper_postgres_password"
+        PGPASSWORD           = var.scrapedumper_postgres_password
         MARTA_API_KEY_FILE   = "/run/secrets/marta_api_key"
       }
 
@@ -73,12 +68,6 @@ resource "docker_service" "scrapedumper" {
         secret_id   = docker_secret.marta_api_key.id
         secret_name = docker_secret.marta_api_key.name
         file_name   = "/run/secrets/marta_api_key"
-      }
-
-      secrets {
-        secret_id   = docker_secret.scrapedumper_postgres_password.id
-        secret_name = docker_secret.scrapedumper_postgres_password.name
-        file_name   = "/run/secrets/scrapedumper_postgres_password"
       }
     }
 
@@ -104,13 +93,7 @@ resource "docker_service" "scrapereaper" {
 
       env = {
         POSTGRES_CONNECTION_STRING = local.pg_connection_string
-        PGPASSFILE                 = "/run/secrets/scrapedumper_postgres_password"
-      }
-
-      secrets {
-        secret_id   = docker_secret.scrapedumper_postgres_password.id
-        secret_name = docker_secret.scrapedumper_postgres_password.name
-        file_name   = "/run/secrets/scrapedumper_postgres_password"
+        PGPASSWORD                 = var.scrapedumper_postgres_password
       }
     }
 
