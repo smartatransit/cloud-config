@@ -24,8 +24,7 @@ resource "docker_service" "cron-manager" {
 
   task_spec {
     container_spec {
-      # crazymax/swarm-cronjob:latest
-      image = "crazymax/swarm-cronjob:617769b594cefe038045b6df56f22695d7352eb5b53d97f2af8d5adb30a9bd2a"
+      image = "crazymax/swarm-cronjob:latest"
 
       env = {
         TZ = "US/Eastern"
