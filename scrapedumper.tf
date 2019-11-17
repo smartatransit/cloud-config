@@ -8,6 +8,11 @@ variable "marta_api_key" {
 }
 
 //// SECERTS ////
+resource "docker_secret" "scrapedumper_postgres_password" {
+  name = "scrapedumper_postgres_password"
+  data = base64encode(var.scrapedumper_postgres_password)
+}
+
 resource "docker_secret" "marta_api_key" {
   name = "marta_api_key"
   data = base64encode(var.marta_api_key)
