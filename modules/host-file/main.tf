@@ -4,7 +4,8 @@ data "template_file" "file" {
 }
 
 locals {
-  digest = md5(data.template_file.file.rendered)
+  digest      = md5(data.template_file.file.rendered)
+  destination = join("/", [var.destination_dir, var.template_name])
 }
 
 resource "null_resource" "file" {
@@ -21,6 +22,6 @@ resource "null_resource" "file" {
 
   provisioner "file" {
     content     = data.template_file.file.rendered
-    destination = var.destination
+    destination = local.destination
   }
 }

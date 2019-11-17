@@ -5,7 +5,7 @@ variable "template_name" {
 variable "vars" {
   type = map(string)
 }
-variable "destination" {
+variable "destination_dir" {
   type = string
 }
 
