@@ -98,5 +98,15 @@ resource "docker_service" "scrapereaper" {
     }
 
     networks = [docker_network.postgres.id]
+
+    restart_policy = {
+      condition = "none"
+    }
+  }
+
+  mode {
+    replicated {
+      replicas = 0
+    }
   }
 }
