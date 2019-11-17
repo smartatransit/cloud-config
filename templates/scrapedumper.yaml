@@ -1,8 +1,6 @@
 {
   "train_dumper": {
-    {
-      "kind": "POSTGRES",
-      "postgres_connection_string": "${pg_connection_string}"
-    }
+    "kind": "POSTGRES",
+    "postgres_connection_string": "${pg_connection_string}"
   }
 }
