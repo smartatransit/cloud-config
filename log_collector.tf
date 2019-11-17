@@ -9,18 +9,12 @@ data "docker_registry_image" "log-collector" {
   name = "logzio/docker-collector-logs:0.0.4"
 }
 
-module "log_collector_image" {
-  source     = "./modules/docker-image"
-  repository = "logzio/docker-collector-logs"
-  tag        = "0.0.4"
-}
-
 resource "docker_service" "log-collector" {
   name = "log-collector"
 
   task_spec {
     container_spec {
-      image = "logzio/docker-collector-logs:${module.log_collector_image.digest}"
+      image = "logzio/docker-collector-logs:c935656e"
 
       env = {
         LOGZIO_TOKEN = var.logzio_token

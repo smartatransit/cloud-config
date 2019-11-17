@@ -19,18 +19,13 @@ provider "docker" {
   key_material  = base64decode(var.docker_key_material)
 }
 
-module "cron_manager_image" {
-  source     = "./modules/docker-image"
-  repository = "crazymax/swarm-cronjob"
-  tag        = "1.7.1"
-}
-
 resource "docker_service" "cron-manager" {
   name = "cron-manager"
 
   task_spec {
     container_spec {
-      image = "crazymax/swarm-cronjob:${module.cron_manager_image.digest}"
+      # crazymax/swarm-cronjob:latest
+      image = "crazymax/swarm-cronjob:a517c143"
 
       env = {
         TZ = "US/Eastern"

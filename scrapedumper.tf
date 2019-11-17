@@ -36,8 +36,8 @@ locals {
 module "scrapedumper_config" {
   source = "./modules/host-file"
 
-  template_name = "scrapedumper.yaml"
-  destination   = var.terraform_host_user_artifacts_root
+  template_name   = "scrapedumper.yaml"
+  destination_dir = var.terraform_host_user_artifacts_root
   vars = {
     pg_connection_string = local.pg_connection_string
   }
@@ -47,12 +47,6 @@ module "scrapedumper_config" {
   key_material = var.terraform_host_user_key_material
 }
 
-module "scrapedumper_image" {
-  source     = "./modules/docker-image"
-  repository = "smartatransit/scrapedumper"
-  tag        = "latest"
-}
-
 resource "docker_service" "scrapedumper" {
   depends_on = [module.scrapedumper_config]
 
@@ -60,7 +54,8 @@ resource "docker_service" "scrapedumper" {
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapedumper:${module.scrapedumper_image.digest}"
+      # smartatransit/scrapedumper:latest
+      image = "smartatransit/scrapedumper:482fdb81"
 
       env = {
         POLL_TIME_IN_SECONDS = "15"
@@ -92,18 +87,13 @@ resource "docker_service" "scrapedumper" {
   }
 }
 
-module "scrapereaper_image" {
-  source     = "./modules/docker-image"
-  repository = "smartatransit/scrapereaper"
-  tag        = "latest"
-}
-
 resource "docker_service" "scrapereaper" {
   name = "scrapereaper"
 
   task_spec {
     container_spec {
-      image = "smartatransit/scrapereaper:${module.scrapereaper_image.digest}"
+      # smartatransit/scrapereaper:latest
+      image = "smartatransit/scrapereaper:6493e498"
 
       labels {
         label = "swarm.cronjob.enable"
