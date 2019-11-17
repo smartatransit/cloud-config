@@ -1,5 +1,5 @@
 output "destination" {
-  value = var.destination
+  value = local.destination
 }
 
 output "digest" {
