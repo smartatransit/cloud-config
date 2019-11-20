@@ -13,7 +13,7 @@ resource "null_resource" "file" {
   provisioner "file" {
     when = "create"
 
-    content     = ""
+    content     = "{}"
     destination = local.destination
   }
 }
