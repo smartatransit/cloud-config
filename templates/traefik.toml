@@ -1,0 +1,91 @@
+###
+###
+### TODO: this is copy-pasted from the v2 config reference here: https://docs.traefik.io/reference/static-configuration/file/
+### Go through and figure out what we need for:
+### (1) redirect to HTTPS
+### (2) generate and renew certificates for each service
+### (3) docker routing
+###
+###
+
+# TODO
+# https://community.containo.us/t/global-http-to-https-redirect-in-v2/1658/3
+# an example (including docker label config) of how to do some stuff
+
+# TODO: this belongs in the dynamic configuration for each one:
+# [http.routers]
+#   [http.routers.routerfoo]
+#     rule = "Host(`snitest.com`) && Path(`/foo`)"
+#     [http.routers.routerfoo.tls]
+#       certResolver = "foo"
+
+# - traefik.http.routers.web.rule=Host(``)
+# - traefik.http.routers.web.entrypoints=web
+# - traefik.http.routers.web.middlewares=redirect@file
+# - traefik.http.routers.web-secured.rule=Host(`foo.com`)
+# - traefik.http.routers.web-secured.entrypoints=web-secure
+# - traefik.http.routers.web-secured.tls=true
+
+[global]
+  sendAnonymousUsage = false
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+    [entryPoints.web.forwardedHeaders]
+      insecure = true
+  # [entryPoints.web-secure]
+  #   address = ":80"
+  #   [entryPoints.web-secure.forwardedHeaders]
+  #     insecure = true
+
+[providers]
+  [providers.docker]
+    exposedByDefault = false
+    domain = "${services_domain}"
+    network = "${network}"
+
+# [certificatesResolvers]
+#   [certificatesResolvers.Main]
+#     [certificatesResolvers.Main.acme]
+#       email = "team@ataper.net"
+#       storage = "acme.json"
+#       [certificatesResolvers.Main.acme.tlsChallenge]
+
+[api]
+  insecure = true
+#   dashboard = true
+#   debug = true
+
+# [ping]
+#   entryPoint = "foobar"
+
+# [log]
+#   level = "foobar"
+#   filePath = "foobar"
+#   format = "foobar"
+
+# [accessLog]
+#   filePath = "foobar"
+#   format = "foobar"
+#   bufferingSize = 42
+#   [accessLog.filters]
+#     statusCodes = ["foobar", "foobar"]
+#     retryAttempts = true
+#     minDuration = 42
+#   [accessLog.fields]
+#     defaultMode = "foobar"
+#     [accessLog.fields.names]
+#       name0 = "foobar"
+#       name1 = "foobar"
+#     [accessLog.fields.headers]
+#       defaultMode = "foobar"
+#       [accessLog.fields.headers.names]
+#         name0 = "foobar"
+#         name1 = "foobar"
+
+# TODO wtf is this?
+# [hostResolver]
+#   cnameFlattening = true
+#   resolvConfig = "foobar"
+#   resolvDepth = 42

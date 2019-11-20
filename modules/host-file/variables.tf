@@ -3,7 +3,8 @@ variable "template_name" {
   type = string
 }
 variable "vars" {
-  type = map(string)
+  type    = map(string)
+  default = {}
 }
 variable "destination_dir" {
   type = string
