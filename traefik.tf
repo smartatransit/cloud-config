@@ -3,6 +3,10 @@ variable "stack_domain" {
   default = "services.ataper.net"
 }
 
+variable "traefik_dashboard_password" {
+  type = "string"
+}
+
 resource "docker_network" "traefik" {
   name   = "traefik"
   driver = "overlay"
@@ -36,9 +40,26 @@ module "acme_dot_json" {
 }
 
 resource "docker_service" "traefik" {
-  depends_on = [module.traefik_config]
+  depends_on = [module.traefik_config, module.acme_dot_json]
 
   name = "traefik"
+
+  labels {
+    label = "traefik.http.routers.api.rule"
+    value = "Host(`traefik-dashboard.${var.services_domain}`)"
+  }
+  labels {
+    label = "traefik.http.routers.api.service"
+    value = "api@internal"
+  }
+  labels {
+    label = "traefik.http.routers.api.middlewares"
+    value = "auth"
+  }
+  labels {
+    label = "traefik.http.middlewares.auth.basicauth.users"
+    value = "ataperteam:${var.traefik_dashboard_password}"
+  }
 
   task_spec {
     container_spec {
@@ -76,7 +97,6 @@ resource "docker_service" "nginx" {
     label = "traefik.enable"
     value = "true"
   }
-
   labels {
     label = "traefik.http.routers.web.rule"
     value = "Host(`nginx.${var.stack_domain}`)"

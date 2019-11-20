@@ -1,23 +1,6 @@
-###
-###
-### TODO: this is copy-pasted from the v2 config reference here: https://docs.traefik.io/reference/static-configuration/file/
-### Go through and figure out what we need for:
-### (1) redirect to HTTPS
-### (2) generate and renew certificates for each service
-### (3) docker routing
-###
-###
-
-# TODOx
+# TODO
 # https://community.containo.us/t/global-http-to-https-redirect-in-v2/1658/3
 # an example (including docker label config) of how to do some stuff
-
-# - traefik.http.routers.web.rule=Host(``)
-# - traefik.http.routers.web.entrypoints=web
-# - traefik.http.routers.web.middlewares=redirect@file
-# - traefik.http.routers.web-secured.rule=Host(`foo.com`)
-# - traefik.http.routers.web-secured.entrypoints=web-secure
-# - traefik.http.routers.web-secured.tls=true
 
 [global]
   sendAnonymousUsage = false
@@ -28,7 +11,7 @@
     [entryPoints.web.forwardedHeaders]
       insecure = true
   [entryPoints.web-secure]
-    address = ":80"
+    address = ":443"
     [entryPoints.web-secure.forwardedHeaders]
       insecure = true
 
@@ -46,9 +29,7 @@
       [certificatesResolvers.main.acme.tlsChallenge]
 
 [api]
-  insecure = true
-#   dashboard = true
-#   debug = true
+  dashboard = true
 
 # [ping]
 #   entryPoint = "foobar"
@@ -76,9 +57,3 @@
 #       [accessLog.fields.headers.names]
 #         name0 = "foobar"
 #         name1 = "foobar"
-
-# TODO wtf is this?
-# [hostResolver]
-#   cnameFlattening = true
-#   resolvConfig = "foobar"
-#   resolvDepth = 42
