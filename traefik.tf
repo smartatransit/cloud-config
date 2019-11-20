@@ -42,7 +42,7 @@ module "acme_dot_json" {
 resource "docker_service" "traefik" {
   depends_on = [module.traefik_config, module.acme_dot_json]
 
-  name = "traefik:v2.0"
+  name = "traefik"
 
   labels {
     label = "traefik.http.routers.api.rule"
@@ -63,7 +63,7 @@ resource "docker_service" "traefik" {
 
   task_spec {
     container_spec {
-      image = "traefik:v2.0.0-rc3"
+      image = "traefik:v2.0"
 
       mounts {
         target = "/traefik.toml"
