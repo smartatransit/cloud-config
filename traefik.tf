@@ -1,4 +1,4 @@
-variable "stack_domain" {
+variable "services_domain" {
   type    = "string"
   default = "services.ataper.net"
 }
@@ -23,7 +23,7 @@ module "traefik_config" {
 
   vars = {
     lets_encrypt_email = "team@ataper.net" // TODO
-    services_domain    = var.stack_domain
+    services_domain    = var.services_domain
     network            = docker_network.traefik.name
   }
 
@@ -99,7 +99,7 @@ resource "docker_service" "nginx" {
   }
   labels {
     label = "traefik.http.routers.web.rule"
-    value = "Host(`nginx.${var.stack_domain}`)"
+    value = "Host(`nginx.${var.services_domain}`)"
   }
   labels {
     label = "traefik.http.routers.web.entrypoints"
@@ -107,7 +107,7 @@ resource "docker_service" "nginx" {
   }
   labels {
     label = "traefik.http.routers.web-secure.rule"
-    value = "Host(`nginx.${var.stack_domain}`)"
+    value = "Host(`nginx.${var.services_domain}`)"
   }
   labels {
     label = "traefik.http.routers.web-secure.entrypoints"

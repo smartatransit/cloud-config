@@ -100,7 +100,8 @@ resource "docker_service" "scrapereaper" {
     networks = [docker_network.postgres.id]
 
     restart_policy = {
-      condition = "none"
+      condition    = "none"
+      max_attempts = 0
     }
   }
 
