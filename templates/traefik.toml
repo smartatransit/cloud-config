@@ -8,16 +8,9 @@
 ###
 ###
 
-# TODO
+# TODOx
 # https://community.containo.us/t/global-http-to-https-redirect-in-v2/1658/3
 # an example (including docker label config) of how to do some stuff
-
-# TODO: this belongs in the dynamic configuration for each one:
-# [http.routers]
-#   [http.routers.routerfoo]
-#     rule = "Host(`snitest.com`) && Path(`/foo`)"
-#     [http.routers.routerfoo.tls]
-#       certResolver = "foo"
 
 # - traefik.http.routers.web.rule=Host(``)
 # - traefik.http.routers.web.entrypoints=web
@@ -34,10 +27,10 @@
     address = ":80"
     [entryPoints.web.forwardedHeaders]
       insecure = true
-  # [entryPoints.web-secure]
-  #   address = ":80"
-  #   [entryPoints.web-secure.forwardedHeaders]
-  #     insecure = true
+  [entryPoints.web-secure]
+    address = ":80"
+    [entryPoints.web-secure.forwardedHeaders]
+      insecure = true
 
 [providers]
   [providers.docker]
@@ -45,12 +38,12 @@
     domain = "${services_domain}"
     network = "${network}"
 
-# [certificatesResolvers]
-#   [certificatesResolvers.Main]
-#     [certificatesResolvers.Main.acme]
-#       email = "team@ataper.net"
-#       storage = "acme.json"
-#       [certificatesResolvers.Main.acme.tlsChallenge]
+[certificatesResolvers]
+  [certificatesResolvers.main]
+    [certificatesResolvers.main.acme]
+      email = "${lets_encrypt_email}"
+      storage = "/acme.json"
+      [certificatesResolvers.main.acme.tlsChallenge]
 
 [api]
   insecure = true
