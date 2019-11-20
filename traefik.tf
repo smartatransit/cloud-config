@@ -12,45 +12,28 @@ module "traefik_config" {
   source = "./modules/host-file"
 
   template_name   = "traefik.toml"
+  host            = var.docker_host
+  user            = var.terraform_host_user
+  key_material    = var.terraform_host_user_key_material
   destination_dir = var.terraform_host_user_artifacts_root
 
   vars = {
-    services_domain = var.stack_domain
-    network         = docker_network.traefik.name
+    lets_encrypt_email = "team@ataper.net" // TODO
+    services_domain    = var.stack_domain
+    network            = docker_network.traefik.name
   }
 
-  host         = var.docker_host
-  user         = var.terraform_host_user
-  key_material = var.terraform_host_user_key_material
 }
 
-# module "acme_dot_json" {
-#   source = "./modules/host-file"
-#
-#   destination_dir = var.terraform_host_user_artifacts_root
-#
-#   TODO: create an empty file and then _don't_ overwrite it
-#
-# }
+module "acme_dot_json" {
+  source = "./modules/host-file-unmanaged"
 
-# resource "null_resource" "file" {
-#   //no triggers - just build it once and leave it
-
-#   connection {
-#     type        = "ssh"
-#     host        = var.host
-#     user        = var.user
-#     private_key = base64decode(var.key_material)
-#   }
-
-#   provisioner "file" {
-#     content = ""
-#     destination = join("/", [
-#       var.terraform_host_user_artifacts_root,
-#       "acme.json",
-#     ])
-#   }
-# }
+  file_name       = "acme.json"
+  host            = var.docker_host
+  user            = var.terraform_host_user
+  key_material    = var.terraform_host_user_key_material
+  destination_dir = var.terraform_host_user_artifacts_root
+}
 
 resource "docker_service" "traefik" {
   depends_on = [module.traefik_config]
@@ -66,6 +49,12 @@ resource "docker_service" "traefik" {
         source = module.traefik_config.destination
         type   = "bind"
       }
+
+      mounts {
+        target = "/acme.json"
+        source = module.acme_dot_json.destination
+        type   = "bind"
+      }
     }
 
     networks = [docker_network.traefik.id]
@@ -78,7 +67,6 @@ resource "docker_service" "traefik" {
   }
 }
 
-
 resource "docker_service" "nginx" {
   depends_on = [module.traefik_config]
 
@@ -88,6 +76,7 @@ resource "docker_service" "nginx" {
     label = "traefik.enable"
     value = "true"
   }
+
   labels {
     label = "traefik.http.routers.web.rule"
     value = "Host(`nginx.${var.stack_domain}`)"
@@ -95,6 +84,18 @@ resource "docker_service" "nginx" {
   labels {
     label = "traefik.http.routers.web.entrypoints"
     value = "web"
+  }
+  labels {
+    label = "traefik.http.routers.web-secure.rule"
+    value = "Host(`nginx.${var.stack_domain}`)"
+  }
+  labels {
+    label = "traefik.http.routers.web-secure.entrypoints"
+    value = "web"
+  }
+  labels {
+    label = "traefik.http.routers.web-secure.tls.certResolver"
+    value = "main"
   }
 
   task_spec {
@@ -105,4 +106,3 @@ resource "docker_service" "nginx" {
     networks = [docker_network.traefik.id]
   }
 }
-
