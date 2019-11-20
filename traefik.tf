@@ -26,7 +26,6 @@ module "traefik_config" {
     services_domain    = var.services_domain
     network            = docker_network.traefik.name
   }
-
 }
 
 module "acme_dot_json" {
@@ -125,6 +124,10 @@ resource "docker_service" "nginx" {
   labels {
     label = "traefik.http.routers.web-secure.tls.certResolver"
     value = "main"
+  }
+  labels {
+    label = "traefik.http.services.nginx.loadbalancer.server.port"
+    value = "22904"
   }
 
   task_spec {
