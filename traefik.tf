@@ -42,7 +42,7 @@ module "acme_dot_json" {
 resource "docker_service" "traefik" {
   depends_on = [module.traefik_config, module.acme_dot_json]
 
-  name = "traefik"
+  name = "traefik:v2.0"
 
   labels {
     label = "traefik.http.routers.api.rule"
@@ -80,6 +80,15 @@ resource "docker_service" "traefik" {
 
     networks = [docker_network.traefik.id]
   }
+
+  #
+  #
+  #
+  # TODO: the nginx container seems to be getting port 80 automatically
+  #  once traefik is fixed, will this conflict?
+  #
+  #
+  #
 
   endpoint_spec {
     ports { target_port = "80" }
@@ -124,5 +133,13 @@ resource "docker_service" "nginx" {
     }
 
     networks = [docker_network.traefik.id]
+  }
+
+  //nginx publishes to port 80 by default - to avoid a conflict,
+  //map port 80 to something random that lives behind the firewall
+  //anyways
+  ports {
+    target_port    = "80"
+    published_port = "22904"
   }
 }
