@@ -17,8 +17,9 @@
 
 [providers]
   [providers.docker]
+    # https://docs.traefik.io/providers/docker/#defaultrule
+    # defaultRule = "TODO"
     exposedByDefault = false
-    domain = "${services_domain}"
     network = "${network}"
 
 [certificatesResolvers]
