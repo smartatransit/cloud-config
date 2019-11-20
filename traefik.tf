@@ -138,8 +138,10 @@ resource "docker_service" "nginx" {
   //nginx publishes to port 80 by default - to avoid a conflict,
   //map port 80 to something random that lives behind the firewall
   //anyways
-  ports {
-    target_port    = "80"
-    published_port = "22904"
+  endpoint_spec {
+    ports {
+      target_port    = "80"
+      published_port = "22904"
+    }
   }
 }
