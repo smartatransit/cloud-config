@@ -3,7 +3,7 @@ variable "services_domain" {
   default = "services.ataper.net"
 }
 
-variable "traefik_dashboard_password" {
+variable "apr1_traefik_dashboard_password" {
   type = "string"
 }
 
@@ -55,6 +55,43 @@ resource "docker_service" "traefik" {
 
   name = "traefik"
 
+  task_spec {
+    container_spec {
+      image = "traefik:v2.0"
+
+      mounts {
+        target = "/traefik.toml"
+        source = module.traefik_config.destination
+        type   = "bind"
+      }
+      mounts {
+        target = "/acme.json"
+        source = local.acme_dot_json_path
+        type   = "bind"
+      }
+      mounts {
+        target = "/var/run/docker.sock"
+        source = "/var/run/docker.sock"
+        type   = "bind"
+      }
+    }
+
+    networks = [docker_network.traefik.id]
+  }
+
+  #
+  #
+  #
+  # TODO:
+  # set up TLS for the dashboard
+  #
+  #
+  #
+
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
   labels {
     label = "traefik.http.routers.api.rule"
     value = "Host(`traefik.${var.services_domain}`)"
@@ -69,37 +106,11 @@ resource "docker_service" "traefik" {
   }
   labels {
     label = "traefik.http.middlewares.auth.basicauth.users"
-    value = "ataperteam:${var.traefik_dashboard_password}"
+    value = "ataperteam:${var.apr1_traefik_dashboard_password}"
   }
   labels {
     label = "traefik.http.services.dummy-svc.loadbalancer.server.port"
     value = "9999"
-  }
-
-  task_spec {
-    container_spec {
-      image = "traefik:v2.0"
-
-      mounts {
-        target = "/traefik.toml"
-        source = module.traefik_config.destination
-        type   = "bind"
-      }
-
-      mounts {
-        target = "/acme.json"
-        source = local.acme_dot_json_path
-        type   = "bind"
-      }
-
-      mounts {
-        target = "/var/run/docker.sock"
-        source = "/var/run/docker.sock"
-        type   = "bind"
-      }
-    }
-
-    networks = [docker_network.traefik.id]
   }
 
   endpoint_spec {
@@ -123,35 +134,6 @@ resource "docker_service" "nginx" {
 
   name = "nginx"
 
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
-  labels {
-    label = "traefik.http.routers.web.rule"
-    value = "Host(`nginx.${var.services_domain}`)"
-  }
-  labels {
-    label = "traefik.http.routers.web.entrypoints"
-    value = "web"
-  }
-  labels {
-    label = "traefik.http.routers.web-secure.rule"
-    value = "Host(`nginx.${var.services_domain}`)"
-  }
-  labels {
-    label = "traefik.http.routers.web-secure.entrypoints"
-    value = "web"
-  }
-  labels {
-    label = "traefik.http.routers.web-secure.tls.certResolver"
-    value = "main"
-  }
-  labels {
-    label = "traefik.http.services.nginx.loadbalancer.server.port"
-    value = "22904"
-  }
-
   task_spec {
     container_spec {
       image = "nginx:latest"
@@ -168,5 +150,31 @@ resource "docker_service" "nginx" {
       target_port    = "80"
       published_port = "22904"
     }
+  }
+
+  labels {
+    label = "smarta.subdomain"
+    value = "bloggo"
+  }
+
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+  labels {
+    label = "traefik.http.routers.web.entrypoints"
+    value = "web"
+  }
+  labels {
+    label = "traefik.http.routers.web-secure.entrypoints"
+    value = "web-secure"
+  }
+  labels {
+    label = "traefik.http.routers.web-secure.tls.certResolver"
+    value = "main"
+  }
+  labels {
+    label = "traefik.http.services.nginx.loadbalancer.server.port"
+    value = "80"
   }
 }
