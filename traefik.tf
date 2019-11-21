@@ -28,18 +28,30 @@ module "traefik_config" {
   }
 }
 
-module "acme_dot_json" {
-  source = "./modules/host-file-unmanaged"
+locals {
+  acme_dot_json_path = "${var.terraform_host_user_artifacts_root}/acme.json"
+}
 
-  file_name       = "acme.json"
-  host            = var.docker_host
-  user            = var.terraform_host_user
-  key_material    = var.terraform_host_user_key_material
-  destination_dir = var.terraform_host_user_artifacts_root
+resource "null_resource" "acme_dot_json" {
+  connection {
+    type        = "ssh"
+    host        = var.docker_host
+    user        = var.terraform_host_user
+    private_key = base64decode(var.terraform_host_user_key_material)
+  }
+
+  provisioner "remote-exec" {
+    when = "create"
+
+    inline = [
+      "touch ${local.acme_dot_json_path}",
+      "chmod 0600 ${local.acme_dot_json_path}",
+    ]
+  }
 }
 
 resource "docker_service" "traefik" {
-  depends_on = [module.traefik_config, module.acme_dot_json]
+  depends_on = [module.traefik_config, null_resource.acme_dot_json]
 
   name = "traefik"
 
@@ -76,7 +88,7 @@ resource "docker_service" "traefik" {
 
       mounts {
         target = "/acme.json"
-        source = module.acme_dot_json.destination
+        source = local.acme_dot_json_path
         type   = "bind"
       }
 
