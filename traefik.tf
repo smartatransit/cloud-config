@@ -45,7 +45,7 @@ resource "docker_service" "traefik" {
 
   labels {
     label = "traefik.http.routers.api.rule"
-    value = "Host(`traefik-dashboard.${var.services_domain}`)"
+    value = "Host(`traefik.${var.services_domain}`)"
   }
   labels {
     label = "traefik.http.routers.api.service"
@@ -58,6 +58,10 @@ resource "docker_service" "traefik" {
   labels {
     label = "traefik.http.middlewares.auth.basicauth.users"
     value = "ataperteam:${var.traefik_dashboard_password}"
+  }
+  labels {
+    label = "traefik.http.services.dummy-svc.loadbalancer.server.port"
+    value = "9999"
   }
 
   task_spec {
@@ -80,19 +84,15 @@ resource "docker_service" "traefik" {
     networks = [docker_network.traefik.id]
   }
 
-  #
-  #
-  #
-  # TODO: the nginx container seems to be getting port 80 automatically
-  #  once traefik is fixed, will this conflict?
-  #
-  #
-  #
-
   endpoint_spec {
-    ports { target_port = "80" }
-    ports { target_port = "443" }
-    ports { target_port = "8080" }
+    ports {
+      target_port    = "80"
+      published_port = "80"
+    }
+    ports {
+      target_port    = "443"
+      published_port = "443"
+    }
   }
 }
 
