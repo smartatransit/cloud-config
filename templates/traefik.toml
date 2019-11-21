@@ -1,10 +1,3 @@
-# TODO
-# https://community.containo.us/t/global-http-to-https-redirect-in-v2/1658/3
-# an example (including docker label config) of how to do some stuff
-
-[global]
-  sendAnonymousUsage = false
-
 [entryPoints]
   [entryPoints.web]
     address = ":80"
@@ -17,10 +10,13 @@
 
 [providers]
   [providers.docker]
-    # https://docs.traefik.io/providers/docker/#defaultrule
-    # defaultRule = "TODO"
+    swarmMode = true
     exposedByDefault = false
     network = "${network}"
+    defaultRule = "Host(`{{ default .Name (index .Labels \"smarta.subdomain\") }}.${services_domain}`)"
+  [providers.file]
+    watch = true
+    filename = "${dynamic_toml_path}"
 
 [certificatesResolvers]
   [certificatesResolvers.main]
@@ -33,29 +29,13 @@
   dashboard = true
   insecure = true
 
-# [ping]
-#   entryPoint = "foobar"
-
 [log]
-  level = "DEBUG"
-#   filePath = "foobar"
-#   format = "foobar"
+  # level = "DEBUG"
 
 [accessLog]
-#   filePath = "foobar"
-#   format = "foobar"
-#   bufferingSize = 42
-#   [accessLog.filters]
-#     statusCodes = ["foobar", "foobar"]
-#     retryAttempts = true
-#     minDuration = 42
-#   [accessLog.fields]
-#     defaultMode = "foobar"
-#     [accessLog.fields.names]
-#       name0 = "foobar"
-#       name1 = "foobar"
-#     [accessLog.fields.headers]
-#       defaultMode = "foobar"
-#       [accessLog.fields.headers.names]
-#         name0 = "foobar"
-#         name1 = "foobar"
+  [accessLog.fields]
+    defaultMode = "keep"
+
+# TODO
+# (1) [ping] for healthhecks
+# (2) [metrics] for statsD
