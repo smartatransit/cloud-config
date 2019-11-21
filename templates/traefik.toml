@@ -36,12 +36,12 @@
 # [ping]
 #   entryPoint = "foobar"
 
-# [log]
-#   level = "foobar"
+[log]
+  level = "DEBUG"
 #   filePath = "foobar"
 #   format = "foobar"
 
-# [accessLog]
+[accessLog]
 #   filePath = "foobar"
 #   format = "foobar"
 #   bufferingSize = 42
