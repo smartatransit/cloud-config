@@ -99,6 +99,10 @@ resource "docker_service" "traefik" {
       target_port    = "443"
       published_port = "443"
     }
+    ports {
+      target_port    = "8080"
+      published_port = "8080"
+    }
   }
 }
 
