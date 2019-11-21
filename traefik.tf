@@ -1,3 +1,7 @@
+variable "lets_encrypt_email" {
+  type = "string"
+}
+
 variable "services_domain" {
   type    = "string"
   default = "services.ataper.net"
@@ -32,7 +36,7 @@ module "traefik_config" {
   destination_dir = var.terraform_host_user_artifacts_root
 
   vars = {
-    lets_encrypt_email = "team@ataper.net" // TODO
+    lets_encrypt_email = var.lets_encrypt_email
     services_domain    = var.services_domain
     network            = docker_network.traefik.name
     dynamic_toml_path  = "/traefik.dynamic.toml"
@@ -62,11 +66,13 @@ resource "null_resource" "acme_dot_json" {
 }
 
 resource "docker_service" "traefik" {
-  depends_on = [module.traefik_config, module.traefik_dynamic_config, null_resource.acme_dot_json]
+  depends_on = [module.traefik_dynamic_config, null_resource.acme_dot_json]
 
   name = "traefik"
 
   task_spec {
+    force_update = module.traefik_config.docker_trigger
+
     container_spec {
       image = "traefik:v2.0"
 
