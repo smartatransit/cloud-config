@@ -79,6 +79,12 @@ resource "docker_service" "traefik" {
         source = module.acme_dot_json.destination
         type   = "bind"
       }
+
+      mounts {
+        target = "/var/run/docker.sock"
+        source = "/var/run/docker.sock"
+        type   = "bind"
+      }
     }
 
     networks = [docker_network.traefik.id]
