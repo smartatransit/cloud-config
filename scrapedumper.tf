@@ -43,11 +43,11 @@ module "scrapedumper_config" {
 }
 
 resource "docker_service" "scrapedumper" {
-  depends_on = [module.scrapedumper_config]
-
   name = "scrapedumper"
 
   task_spec {
+    force_update = module.scrapedumper_config.docker_trigger
+
     container_spec {
       image = "smartatransit/scrapedumper:latest"
 

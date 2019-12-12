@@ -25,3 +25,11 @@ resource "null_resource" "file" {
     destination = local.destination
   }
 }
+
+//Anytime the digest changes, generate a new random number.
+//This can be used to trigger a Docker service to restart.
+resource "random_integer" "docker_trigger" {
+  min     = 1
+  max     = 100000
+  keepers = { digest = local.digest }
+}
