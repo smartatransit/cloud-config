@@ -41,22 +41,6 @@ resource "docker_service" "service" {
     networks = [var.traefik_network_name]
   }
 
-  endpoint_spec {
-    # ports = var.endpoint_spec.ports
-
-    # for_each = var.endpoint_spec
-    # content {
-    # }
-
-    dynamic "ports" {
-      for_each = var.endpoint_spec.ports
-      content {
-        target_port    = ports.value.target_port
-        published_port = ports.value.published_port
-      }
-    }
-  }
-
   labels {
     label = "smarta.subdomain"
     value = local.subdomain
@@ -76,6 +60,6 @@ resource "docker_service" "service" {
   }
   labels {
     label = "traefik.http.services.${var.name}.loadbalancer.server.port"
-    value = "80"
+    value = var.port
   }
 }
