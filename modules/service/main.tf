@@ -76,6 +76,6 @@ resource "docker_service" "service" {
   }
   labels {
     label = "traefik.http.services.${var.name}.loadbalancer.server.port"
-    value = "80"
+    value = var.port
   }
 }
