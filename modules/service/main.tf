@@ -15,6 +15,11 @@ variable "traefik_network_name" {
   type = "string"
 }
 
+variable "env" {
+  type    = "map"
+  default = {}
+}
+
 locals {
   subdomain = length(var.subdomain) == 0 ? var.name : var.subdomain
 }
@@ -36,6 +41,7 @@ resource "docker_service" "service" {
   task_spec {
     container_spec {
       image = var.image
+      env   = var.env
     }
 
     networks = [var.traefik_network_name]
