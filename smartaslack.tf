@@ -1,4 +1,4 @@
-variable "smartaslack_api_key" {
+variable "smartaslack_marta_api_key" {
   type = "string"
 }
 
