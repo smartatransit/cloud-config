@@ -11,7 +11,7 @@ module "smartaslack" {
   port      = 3000
 
   env = {
-    MARTA_API_KEY = var.smartaslack_api_key
+    MARTA_API_KEY = var.smartaslack_marta_api_key
   }
 
   traefik_network_name = docker_network.traefik.id
