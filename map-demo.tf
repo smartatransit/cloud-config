@@ -7,7 +7,7 @@ module "map-demo" {
 
   name      = "map-demo"
   subdomain = "map-demo"
-  image     = "smartatransit/map-demo:latest"
+  image     = "smartatransit/map-demo:build-15"
   port      = 4000
 
   env = {
