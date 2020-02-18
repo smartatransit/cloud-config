@@ -11,7 +11,7 @@ module "smartaslack" {
 
   name      = "smartaslack"
   subdomain = "smartaslack"
-  image     = "smartatransit/smartaslack:build-18"
+  image     = "smartatransit/smartaslack:build-19"
   port      = 3000
 
   env = {
