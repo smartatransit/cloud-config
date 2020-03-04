@@ -6,7 +6,7 @@ resource "random_password" "transit_stream_postgres" {
 resource "postgresql_role" "transit_stream" {
   name     = "transit_stream"
   login    = true
-  password = random_password.transit_stream_postgres
+  password = random_password.transit_stream_postgres.result
 }
 
 resource "postgresql_grant" "transit_stream" {
