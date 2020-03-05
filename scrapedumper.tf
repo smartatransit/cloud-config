@@ -1,10 +1,10 @@
 //// VARIABLES ////
 variable "scrapedumper_postgres_password" {
-  type = "string"
+  type = string
 }
 
 variable "marta_api_key" {
-  type = "string"
+  type = string
 }
 
 //// SECERTS ////

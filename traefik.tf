@@ -1,14 +1,14 @@
 variable "lets_encrypt_email" {
-  type = "string"
+  type = string
 }
 
 variable "services_domain" {
-  type    = "string"
+  type    = string
   default = "services.ataper.net"
 }
 
 variable "apr1_traefik_dashboard_password" {
-  type = "string"
+  type = string
 }
 
 resource "docker_network" "traefik" {
@@ -56,7 +56,7 @@ resource "null_resource" "acme_dot_json" {
   }
 
   provisioner "remote-exec" {
-    when = "create"
+    when = create
 
     inline = [
       "touch ${local.acme_dot_json_path}",

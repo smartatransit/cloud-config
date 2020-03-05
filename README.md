@@ -14,9 +14,9 @@ When you're confident that the Terraform plan describes what you want it to, you
 
 ## Example
 
-eiieowwowoow```hcl
+```hcl
 variable "myservice_postgres_password" {
-  type = "string"
+  type = string
 }
 
 resource "docker_secret" "myservice_postgres_password" {

@@ -1,22 +1,22 @@
 variable "name" {
-  type = "string"
+  type = string
 }
 
 variable "subdomain" {
-  type    = "string"
+  type    = string
   default = ""
 }
 
 variable "port" {
-  type = "string"
+  type = string
 }
 
 variable "traefik_network_name" {
-  type = "string"
+  type = string
 }
 
 variable "env" {
-  type    = "map"
+  type    = map
   default = {}
 }
 
@@ -25,7 +25,7 @@ locals {
 }
 
 variable "image" {
-  type = "string"
+  type = string
 }
 
 //If you need to access more fields on the service (like
