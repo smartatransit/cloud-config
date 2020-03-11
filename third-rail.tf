@@ -1,7 +1,3 @@
-variable "marta_api_key" {
-  type = "string"
-}
-
 variable "third_rail_twitter_client_id" {
   type = "string"
 }
