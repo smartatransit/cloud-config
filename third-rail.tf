@@ -12,7 +12,7 @@ module "third-rail" {
 
   name      = "third-rail"
   subdomain = "third-rail"
-  image     = "smartatransit/third-rail:build-15"
+  image     = "smartatransit/third-rail:build-16"
   port      = 5000
 
   env = {
