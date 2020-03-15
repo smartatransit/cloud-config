@@ -6,12 +6,16 @@ variable "third_rail_twitter_client_secret" {
   type = string
 }
 
+locals {
+  third_rail_build_num = 20
+}
+
 //// SERVICE ////
 module "third-rail" {
   source = "./modules/service"
 
   name  = "third-rail"
-  image = "smartatransit/third_rail:build-20"
+  image = "smartatransit/third_rail:build-${local.third_rail_build_num}"
   port  = 5000
 
   env = {
@@ -27,7 +31,7 @@ module "third-rail-secure" {
   source = "./modules/service"
 
   name  = "third-rail-secure"
-  image = "smartatransit/third_rail:build-20"
+  image = "smartatransit/third_rail:build-${local.third_rail_build_num}"
   port  = 5000
 
   env = {
