@@ -44,7 +44,7 @@ locals {
 
   api_gateway_labels = {
     "traefik.http.middlewares.test-auth.forwardauth.address"             = lookup(var.gateway_info, "address", "")
-    "traefik.http.middlewares.test-auth.forwardauth.authResponseHeaders" = join(",", lookup(var.gateway_info, "auth_response_headers", []))
+    "traefik.http.middlewares.test-auth.forwardauth.authResponseHeaders" = lookup(var.gateway_info, "auth_response_headers", "")
   }
 
   labels = merge(
