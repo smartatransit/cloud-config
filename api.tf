@@ -6,7 +6,7 @@ module "api-gateway" {
 
   name      = "api-gateway"
   subdomain = "api-gateway"
-  image     = "smartatransit/api-gateway:latest"
+  image     = "smartatransit/api-gateway:staging"
   port      = 4000
 
   env = {
@@ -18,7 +18,7 @@ module "api-gateway" {
 
 locals {
   gateway_info = {
-    address = "api-gateway.${var.services_domain}"
+    address = "https://api-gateway.${var.services_domain}/v1/verify"
 
     // Traefik will automagically blacklist these from the request and set
     // them based on the repsonse from the gateway.
