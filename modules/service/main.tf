@@ -20,8 +20,38 @@ variable "env" {
   default = {}
 }
 
+variable "additional_labels" {
+  type    = map(string)
+  default = {}
+}
+
+variable "gateway_info" {
+  type        = map
+  default     = {}
+  description = "Should be empty or have two fields - `address` and `authResponseHeaders`. If nonempty, then this "
+}
+
 locals {
   subdomain = length(var.subdomain) == 0 ? var.name : var.subdomain
+
+  basic_traefik_labels = {
+    "smarta.subdomain"                                           = local.subdomain
+    "traefik.enable"                                             = "true"
+    "traefik.http.routers.${var.name}.entrypoints"               = "web-secure"
+    "traefik.http.routers.${var.name}.tls.certResolver"          = "main"
+    "traefik.http.services.${var.name}.loadbalancer.server.port" = var.port
+  }
+
+  api_gateway_labels = {
+    "traefik.http.middlewares.test-auth.forwardauth.address"             = lookup(var.gateway_info, "address", "")
+    "traefik.http.middlewares.test-auth.forwardauth.authResponseHeaders" = lookup(var.gateway_info, "auth_response_headers", "")
+  }
+
+  labels = merge(
+    local.basic_traefik_labels,
+    length(var.gateway_info) == 0 ? {} : local.api_gateway_labels,
+    var.additional_labels,
+  )
 }
 
 variable "image" {
@@ -47,25 +77,11 @@ resource "docker_service" "service" {
     networks = [var.traefik_network_name]
   }
 
-  labels {
-    label = "smarta.subdomain"
-    value = local.subdomain
-  }
-
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
-  labels {
-    label = "traefik.http.routers.${var.name}.entrypoints"
-    value = "web-secure"
-  }
-  labels {
-    label = "traefik.http.routers.${var.name}.tls.certResolver"
-    value = "main"
-  }
-  labels {
-    label = "traefik.http.services.${var.name}.loadbalancer.server.port"
-    value = var.port
+  dynamic "labels" {
+    for_each = local.labels
+    content {
+      label = replace(labels.key, "{name}", var.name)
+      value = replace(labels.value, "{name}", var.name)
+    }
   }
 }
