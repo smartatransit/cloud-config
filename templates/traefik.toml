@@ -30,7 +30,7 @@
   insecure = true
 
 [log]
-  # level = "DEBUG"
+  level = "DEBUG"
 
 [accessLog]
   [accessLog.fields]
