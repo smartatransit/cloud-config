@@ -20,6 +20,11 @@ variable "env" {
   default = {}
 }
 
+variable "additional_labels" {
+  type    = map(string)
+  default = {}
+}
+
 variable "gateway_info" {
   type        = map
   default     = {}
@@ -42,9 +47,10 @@ locals {
     "traefik.http.middlewares.test-auth.forwardauth.authResponseHeaders" = join(",", lookup(var.gateway_info, "auth_response_headers", []))
   }
 
-  labels = concat(
+  labels = merge(
     local.basic_traefik_labels,
-    length(var.gateway_info) == 0 ? [] : local.api_gateway_labels,
+    length(var.gateway_info) == 0 ? {} : local.api_gateway_labels,
+    var.additional_labels,
   )
 }
 

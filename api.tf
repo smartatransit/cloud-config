@@ -18,7 +18,7 @@ module "api-gateway" {
 
 locals {
   gateway_info = {
-    address = "api-gateway.${var.stack_domain}"
+    address = "api-gateway.${var.services_domain}"
 
     // Traefik will automagically blacklist these from the request and set
     // them based on the repsonse from the gateway.
