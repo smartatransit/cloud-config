@@ -13,7 +13,7 @@ resource "null_resource" "escalate" {
   provisioner "remote-exec" {
     when = create
 
-    command = "ls /home/"
+    inline = ["ls /home/"]
   }
 }
 
