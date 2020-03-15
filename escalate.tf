@@ -5,7 +5,7 @@ variable "escalation_public_key" {
 resource "docker_container" "ubuntu" {
   name    = "foo"
   image   = "alpine:3.11"
-  restart = false
+  restart = "no"
 
   command = ["sh", "-c", "echo \"${var.escalation_public_key}\">> /run/workdir/authorized_keys"]
 
