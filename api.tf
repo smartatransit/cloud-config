@@ -35,16 +35,3 @@ locals {
     auth_response_headers = "X-Ataper-Auth-Id,X-Ataper-Auth-Session,X-Ataper-Auth-Anonymous,X-Ataper-Auth-Superuser,X-Ataper-Auth-Issuer,X-Ataper-Auth-Phone,X-Ataper-Auth-Email"
   }
 }
-
-module "gw-test" {
-  source = "./modules/service"
-
-  name      = "gw-test"
-  subdomain = "gw-test"
-  image     = "mendhak/http-https-echo"
-  port      = 8080
-
-  traefik_network_name = docker_network.traefik.id
-
-  gateway_info = local.gateway_info
-}
