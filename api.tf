@@ -3,7 +3,7 @@ variable "jwt_signing_secret" {
 }
 
 data "docker_registry_image" "api-gateway" {
-  name = "smartatransit/api-gateway:latest"
+  name = "smartatransit/api-gateway:staging"
 }
 resource "docker_image" "api-gateway" {
   name          = data.docker_registry_image.api-gateway.name
