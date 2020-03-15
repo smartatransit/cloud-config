@@ -1,12 +1,21 @@
 variable "jwt_signing_secret" {
   type = string
 }
+
+data "docker_registry_image" "jupyterhub-notebook" {
+  name = "smartatransit/api-gateway:staging"
+}
+resource "docker_image" "jupyterhub-notebook" {
+  name          = data.docker_registry_image.jupyterhub-notebook.name
+  pull_triggers = [data.docker_registry_image.jupyterhub-notebook.sha256_digest]
+  keep_locally  = true
+}
 module "api-gateway" {
   source = "./modules/service"
 
   name      = "api-gateway"
   subdomain = "api-gateway"
-  image     = "smartatransit/api-gateway:staging"
+  image     = docker_image.jupyterhub-notebook.latest
   port      = 8080
 
   env = {
