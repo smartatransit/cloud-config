@@ -1,9 +1,9 @@
 variable "smartaslack_marta_api_key" {
-  type = "string"
+  type = string
 }
 
 variable "smartaslack_signing_key" {
-  type = "string"
+  type = string
 }
 
 module "smartaslack" {

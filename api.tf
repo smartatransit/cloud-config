@@ -7,7 +7,7 @@ module "api-gateway" {
   name      = "api-gateway"
   subdomain = "api-gateway"
   image     = "smartatransit/api-gateway:staging"
-  port      = 4000
+  port      = 8080
 
   env = {
     JWT_SIGNING_SECRET = var.jwt_signing_secret
