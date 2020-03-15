@@ -11,6 +11,7 @@ module "api-gateway" {
 
   env = {
     JWT_SIGNING_SECRET = var.jwt_signing_secret
+    SERVICE_DOMAIN     = "api-gateway.${var.services_domain}"
   }
 
   traefik_network_name = docker_network.traefik.id
