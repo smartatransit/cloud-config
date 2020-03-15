@@ -1,5 +1,5 @@
 variable "map_demo_api_key" {
-  type = "string"
+  type = string
 }
 
 module "map-demo" {

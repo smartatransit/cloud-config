@@ -1,8 +1,8 @@
 variable "logzio_token" {
-  type = "string"
+  type = string
 }
 variable "logzio_url" {
-  type = "string"
+  type = string
 }
 
 resource "docker_service" "log-collector" {

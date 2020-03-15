@@ -1,14 +1,14 @@
 variable "docker_host" {
-  type = "string"
+  type = string
 }
 variable "docker_ca_material" {
-  type = "string"
+  type = string
 }
 variable "docker_cert_material" {
-  type = "string"
+  type = string
 }
 variable "docker_key_material" {
-  type = "string"
+  type = string
 }
 
 provider "docker" {

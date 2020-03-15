@@ -1,18 +1,18 @@
 //// VARIABLES ////
 variable "postgres_host" {
-  type = "string"
+  type = string
 }
 
 variable "postgres_root_password" {
-  type = "string"
+  type = string
 }
 
 variable "postgres_key_material" {
-  type = "string"
+  type = string
 }
 
 variable "postgres_cert_material" {
-  type = "string"
+  type = string
 }
 
 //// SECERTS ////
