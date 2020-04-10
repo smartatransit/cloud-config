@@ -26,10 +26,10 @@ module "api-gateway" {
   port      = 8080
 
   env = {
-    AUTH0_TENANT_URL      = data.terraform_remote_state.auth0.api_url
-    AUTH0_CLIENT_AUDIENCE = data.terraform_remote_state.auth0.audience
-    CLIENT_ID             = data.terraform_remote_state.auth0.anonymous_client.id
-    CLIENT_SECRET         = data.terraform_remote_state.auth0.anonymous_client.secret
+    AUTH0_TENANT_URL      = data.terraform_remote_state.outputs.auth0.api_url
+    AUTH0_CLIENT_AUDIENCE = data.terraform_remote_state.outputs.auth0.audience
+    CLIENT_ID             = data.terraform_remote_state.outputs.auth0.anonymous_client.id
+    CLIENT_SECRET         = data.terraform_remote_state.outputs.auth0.anonymous_client.secret
   }
 
   traefik_network_name = docker_network.traefik.id
