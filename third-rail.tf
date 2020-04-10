@@ -7,7 +7,7 @@ variable "third_rail_twitter_client_secret" {
 }
 
 locals {
-  third_rail_build_num = 20
+  third_rail_build_num = 47
 }
 
 //// SERVICE ////
