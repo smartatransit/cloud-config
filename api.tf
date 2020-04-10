@@ -9,20 +9,12 @@ data "terraform_remote_state" "auth0" {
   }
 }
 
-data "docker_registry_image" "api-gateway" {
-  name = "smartatransit/api-gateway:staging"
-}
-resource "docker_image" "api-gateway" {
-  name          = data.docker_registry_image.api-gateway.name
-  pull_triggers = [data.docker_registry_image.api-gateway.sha256_digest]
-  keep_locally  = true
-}
 module "api-gateway" {
   source = "./modules/service"
 
   name      = "api-gateway"
   subdomain = "api-gateway"
-  image     = docker_image.api-gateway.latest
+  image     = "smartatransit/api-gateway:build-22"
   port      = 8080
 
   env = {
