@@ -28,8 +28,8 @@ module "api-gateway" {
   env = {
     AUTH0_TENANT_URL      = data.terraform_remote_state.auth0.outputs.api_url
     AUTH0_CLIENT_AUDIENCE = data.terraform_remote_state.auth0.outputs.audience
-    CLIENT_ID             = data.terraform_remote_state.auth0.outputs.anonymous_client.id
-    CLIENT_SECRET         = data.terraform_remote_state.auth0.outputs.anonymous_client.secret
+    CLIENT_ID             = data.terraform_remote_state.auth0.outputs.anonymous_client.client_id
+    CLIENT_SECRET         = data.terraform_remote_state.auth0.outputs.anonymous_client.client_secret
   }
 
   traefik_network_name = docker_network.traefik.id
