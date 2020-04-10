@@ -15,6 +15,8 @@ terraform {
       name = "cloud-config"
     }
   }
+
+  required_version = "= 0.12.23"
 }
 
 variable "terraform_host_user" {
