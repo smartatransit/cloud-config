@@ -1,26 +1,27 @@
-variable "jwt_signing_secret" {
-  type = string
+data "terraform_remote_state" "auth0" {
+  backend = "remote"
+
+  config = {
+    organization = "smartatransit"
+    workspaces = {
+      name = "auth0"
+    }
+  }
 }
 
-data "docker_registry_image" "api-gateway" {
-  name = "smartatransit/api-gateway:staging"
-}
-resource "docker_image" "api-gateway" {
-  name          = data.docker_registry_image.api-gateway.name
-  pull_triggers = [data.docker_registry_image.api-gateway.sha256_digest]
-  keep_locally  = true
-}
 module "api-gateway" {
   source = "./modules/service"
 
   name      = "api-gateway"
   subdomain = "api-gateway"
-  image     = docker_image.api-gateway.latest
+  image     = "smartatransit/api-gateway:build-22"
   port      = 8080
 
   env = {
-    JWT_SIGNING_SECRET = var.jwt_signing_secret
-    SERVICE_DOMAIN     = "api-gateway.${var.services_domain}"
+    AUTH0_TENANT_URL      = data.terraform_remote_state.auth0.outputs.api_url
+    AUTH0_CLIENT_AUDIENCE = data.terraform_remote_state.auth0.outputs.audience
+    CLIENT_ID             = data.terraform_remote_state.auth0.outputs.anonymous_client.client_id
+    CLIENT_SECRET         = data.terraform_remote_state.auth0.outputs.anonymous_client.client_secret
   }
 
   traefik_network_name = docker_network.traefik.id
