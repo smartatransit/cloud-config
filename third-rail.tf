@@ -21,7 +21,7 @@ module "third-rail" {
   env = {
     MARTA_API_KEY         = var.marta_api_key
     TWITTER_CLIENT_ID     = var.third_rail_twitter_client_id
-    TWITTER_CLIENT_SECERT = var.third_rail_twitter_client_secret
+    TWITTER_CLIENT_SECRET = var.third_rail_twitter_client_secret
   }
 
   traefik_network_name = docker_network.traefik.id
