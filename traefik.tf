@@ -128,7 +128,7 @@ resource "docker_service" "traefik" {
   }
   labels {
     label = "traefik.http.middlewares.dashboard-auth.basicauth.users"
-    value = "ataperteam:${var.apr1_traefik_dashboard_password}"
+    value = "smartateam:${var.apr1_traefik_dashboard_password}"
   }
 
   endpoint_spec {
