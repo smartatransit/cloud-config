@@ -1,6 +1,3 @@
-variable "docker_host" {
-  type = string
-}
 variable "docker_ca_material" {
   type = string
 }
