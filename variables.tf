@@ -6,7 +6,7 @@ variable "smarta_domain" {
 
 locals {
   services_domain = "services.${var.smarta_domain}"
-  production_host = "host1.${var.smarta_domain}"
+  production_host = "smarta-data.${var.smarta_domain}"
   postgres_host   = local.production_host
   docker_host     = local.production_host
 }
