@@ -1,8 +1,4 @@
 //// VARIABLES ////
-variable "postgres_host" {
-  type = string
-}
-
 variable "postgres_root_password" {
   type = string
 }
@@ -78,7 +74,7 @@ resource "docker_service" "postgres" {
 
 //// CONNECTION ////
 provider "postgresql" {
-  host            = var.postgres_host
+  host            = local.postgres_host
   username        = "postgres"
   password        = var.postgres_root_password
   sslmode         = "disable"

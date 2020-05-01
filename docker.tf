@@ -1,6 +1,3 @@
-variable "docker_host" {
-  type = string
-}
 variable "docker_ca_material" {
   type = string
 }
@@ -12,7 +9,7 @@ variable "docker_key_material" {
 }
 
 provider "docker" {
-  host = "tcp://${var.docker_host}:2376/"
+  host = "tcp://${local.docker_host}:2376/"
 
   ca_material   = base64decode(var.docker_ca_material)
   cert_material = base64decode(var.docker_cert_material)

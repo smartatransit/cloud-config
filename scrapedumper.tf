@@ -25,7 +25,7 @@ resource "postgresql_database" "scrapedumper" {
 }
 
 locals {
-  pg_connection_string = "host=${var.postgres_host} user=${postgresql_role.smartadata.name} dbname=${postgresql_database.scrapedumper.name} sslmode=disable"
+  pg_connection_string = "host=${local.postgres_host} user=${postgresql_role.smartadata.name} dbname=${postgresql_database.scrapedumper.name} sslmode=disable"
 }
 
 module "scrapedumper_config" {
@@ -37,7 +37,7 @@ module "scrapedumper_config" {
     pg_connection_string = local.pg_connection_string
   }
 
-  host         = var.docker_host
+  host         = local.docker_host
   user         = var.terraform_host_user
   key_material = var.terraform_host_user_key_material
 }
