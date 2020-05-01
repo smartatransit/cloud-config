@@ -2,11 +2,6 @@ variable "lets_encrypt_email" {
   type = string
 }
 
-variable "services_domain" {
-  type    = string
-  default = "services.ataper.net"
-}
-
 variable "apr1_traefik_dashboard_password" {
   type = string
 }
@@ -20,7 +15,7 @@ module "traefik_dynamic_config" {
   source = "./modules/host-file"
 
   template_name   = "traefik.dynamic.toml"
-  host            = var.docker_host
+  host            = local.docker_host
   user            = var.terraform_host_user
   key_material    = var.terraform_host_user_key_material
   destination_dir = var.terraform_host_user_artifacts_root
@@ -30,14 +25,14 @@ module "traefik_config" {
   source = "./modules/host-file"
 
   template_name   = "traefik.toml"
-  host            = var.docker_host
+  host            = local.docker_host
   user            = var.terraform_host_user
   key_material    = var.terraform_host_user_key_material
   destination_dir = var.terraform_host_user_artifacts_root
 
   vars = {
     lets_encrypt_email = var.lets_encrypt_email
-    services_domain    = var.services_domain
+    services_domain    = local.services_domain
     network            = docker_network.traefik.name
     dynamic_toml_path  = "/traefik.dynamic.toml"
   }
@@ -50,7 +45,7 @@ locals {
 resource "null_resource" "acme_dot_json" {
   connection {
     type        = "ssh"
-    host        = var.docker_host
+    host        = local.docker_host
     user        = var.terraform_host_user
     private_key = base64decode(var.terraform_host_user_key_material)
   }

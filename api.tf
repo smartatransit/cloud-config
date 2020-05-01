@@ -29,7 +29,7 @@ module "api-gateway" {
 
 locals {
   gateway_info = {
-    address = "https://api-gateway.${var.services_domain}/v1/verify"
+    address = "https://api-gateway.${local.services_domain}/v1/verify"
 
     // Traefik will automagically blacklist these from the request and set
     // them based on the repsonse from the gateway.
