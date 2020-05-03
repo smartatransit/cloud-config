@@ -1,7 +1,7 @@
 variable "smarta_domain" {
   type        = string
   description = "the core domain for all things smarta"
-  default     = "ataper.net"
+  default     = "smartatransit.com"
 }
 
 locals {
