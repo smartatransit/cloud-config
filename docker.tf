@@ -8,12 +8,21 @@ variable "docker_key_material" {
   type = string
 }
 
-provider "docker" {
-  host = "tcp://${local.docker_host}:2376/"
+locals {
+  docker_connection_options = {
+    host = "tcp://${local.docker_host}:2376/"
 
-  ca_material   = base64decode(var.docker_ca_material)
-  cert_material = base64decode(var.docker_cert_material)
-  key_material  = base64decode(var.docker_key_material)
+    ca_material   = base64decode(var.docker_ca_material)
+    cert_material = base64decode(var.docker_cert_material)
+    key_material  = base64decode(var.docker_key_material)
+  }
+}
+
+provider "docker" {
+  host          = local.docker_connection_options.host
+  ca_material   = local.docker_connection_options.ca_material
+  cert_material = local.docker_connection_options.cert_material
+  key_material  = local.docker_connection_options.key_material
 }
 
 resource "docker_service" "cron-manager" {
@@ -38,4 +47,8 @@ resource "docker_service" "cron-manager" {
       constraints = ["node.role==manager"]
     }
   }
+}
+
+output "docker_connection_options" {
+  value = local.docker_connection_options
 }

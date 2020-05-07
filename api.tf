@@ -36,3 +36,7 @@ locals {
     auth_response_headers = "X-Ataper-Auth-Id,X-Ataper-Auth-Session,X-Ataper-Auth-Anonymous,X-Ataper-Auth-Superuser,X-Ataper-Auth-Issuer,X-Ataper-Auth-Phone,X-Ataper-Auth-Email"
   }
 }
+
+output "gateway_info" {
+  value = local.gateway_info
+}

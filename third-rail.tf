@@ -25,12 +25,14 @@ module "third-rail" {
   }
 
   traefik_network_name = docker_network.traefik.id
+
+  gateway_info = local.gateway_info
 }
 
-module "third-rail-secure" {
+module "third-rail-insecure" {
   source = "./modules/service"
 
-  name  = "third-rail-secure"
+  name  = "third-rail-insecure"
   image = "smartatransit/third_rail:build-${local.third_rail_build_num}"
   port  = 5000
 

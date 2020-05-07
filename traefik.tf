@@ -142,3 +142,7 @@ resource "docker_service" "traefik" {
     }
   }
 }
+
+output "traefik_network" {
+  value = docker_network.traefik
+}
