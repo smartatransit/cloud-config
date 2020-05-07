@@ -73,10 +73,24 @@ resource "docker_service" "postgres" {
 }
 
 //// CONNECTION ////
+locals {
+  postgres_connection_options = {
+    host            = local.postgres_host
+    username        = "postgres"
+    password        = var.postgres_root_password
+    sslmode         = "disable"
+    connect_timeout = 15
+  }
+}
+
 provider "postgresql" {
-  host            = local.postgres_host
-  username        = "postgres"
-  password        = var.postgres_root_password
-  sslmode         = "disable"
-  connect_timeout = 15
+  host            = local.postgres_connection_options.host
+  username        = local.postgres_connection_options.username
+  password        = local.postgres_connection_options.password
+  sslmode         = local.postgres_connection_options.sslmode
+  connect_timeout = local.postgres_connection_options.connect_timeout
+}
+
+output "postgres_connection_options" {
+  value = local.postgres_connection_options
 }

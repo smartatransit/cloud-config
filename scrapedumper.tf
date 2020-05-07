@@ -28,6 +28,12 @@ locals {
   pg_connection_string = "host=${local.postgres_host} user=${postgresql_role.smartadata.name} dbname=${postgresql_database.scrapedumper.name} sslmode=disable"
 }
 
+output "scrapedumper_database" {
+  value = {
+    name = postgresql_database.scrapedumper.name
+  }
+}
+
 module "scrapedumper_config" {
   source = "./modules/host-file"
 
