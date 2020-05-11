@@ -43,6 +43,4 @@ module "third-rail-insecure" {
   }
 
   traefik_network_name = docker_network.traefik.id
-
-  gateway_info = local.gateway_info
 }
