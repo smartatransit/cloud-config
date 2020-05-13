@@ -15,6 +15,7 @@ resource "docker_service" "log-collector" {
       env = {
         LOGZIO_TOKEN = var.logzio_token
         LOGZIO_URL   = var.logzio_url
+        LOGZIO_CODEC = "json"
       }
 
       mounts {

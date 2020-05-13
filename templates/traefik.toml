@@ -30,11 +30,11 @@
   insecure = true
 
 [log]
-  level = "DEBUG"
+#  level = "DEBUG"
 
 [accessLog]
-  [accessLog.fields]
-    defaultMode = "keep"
+#  [accessLog.fields]
+#    defaultMode = "keep"
 
 # TODO
 # (1) [ping] for healthhecks
