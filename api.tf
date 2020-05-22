@@ -26,7 +26,7 @@ module "api-gateway" {
 
   traefik_network_name = docker_network.traefik.id
 
-  smarta_domain     = var.smartatransit
+  smarta_domain     = var.smarta_domain
   alternate_domains = var.alternate_domains
 }
 
