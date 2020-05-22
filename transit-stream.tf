@@ -31,4 +31,7 @@ module "transit-stream" {
   }
 
   traefik_network_name = docker_network.traefik.id
+
+  smarta_domain     = var.smartatransit
+  alternate_domains = var.alternate_domains
 }
