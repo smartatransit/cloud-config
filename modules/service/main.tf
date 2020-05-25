@@ -47,10 +47,10 @@ locals {
       "traefik.http.routers.${var.name}.entrypoints"               = "web-secure"
       "traefik.http.routers.${var.name}.tls.certResolver"          = "main"
       "traefik.http.services.${var.name}.loadbalancer.server.port" = var.port
-      "traefik.http.routers.<router_name>.tls.domains[0].main"     = "${local.subdomain}.${var.smarta_domain}"
+      "traefik.http.routers.${var.name}.tls.domains[0].main"       = "${local.subdomain}.${var.smarta_domain}"
       }, {
       for san in var.alternate_domains :
-      "traefik.http.routers.<router_name>.tls.domains[0].sans" => "${local.subdomain}.${san}"
+      "traefik.http.routers.${var.name}.tls.domains[0].sans" => "${local.subdomain}.${san}"
     }
   )
 
