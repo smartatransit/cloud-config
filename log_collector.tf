@@ -10,7 +10,7 @@ resource "docker_service" "log-collector" {
 
   task_spec {
     container_spec {
-      image = "logzio/docker-collector-logs:latest"
+      image = "logzio/docker-collector-logs:0.0.6"
 
       env = {
         LOGZIO_TOKEN = var.logzio_token

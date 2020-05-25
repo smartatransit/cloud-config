@@ -27,6 +27,9 @@ module "third-rail" {
   traefik_network_name = docker_network.traefik.id
 
   gateway_info = local.gateway_info
+
+  smarta_domain     = var.smarta_domain
+  alternate_domains = var.alternate_domains
 }
 
 module "third-rail-insecure" {
@@ -43,4 +46,7 @@ module "third-rail-insecure" {
   }
 
   traefik_network_name = docker_network.traefik.id
+
+  smarta_domain     = var.smarta_domain
+  alternate_domains = var.alternate_domains
 }
