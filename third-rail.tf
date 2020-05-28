@@ -1,3 +1,7 @@
+resource "random_password" "third_rail_postgres" {
+  length = 64
+}
+
 variable "third_rail_twitter_client_id" {
   type = string
 }
@@ -8,6 +12,16 @@ variable "third_rail_twitter_client_secret" {
 
 locals {
   third_rail_build_num = 59
+}
+
+resource "postgresql_role" "third_rail" {
+  name     = "third_rail"
+  login    = true
+  password = random_password.third_rail_postgres.result
+}
+resource "postgresql_database" "third_rail" {
+  name  = "third_rail"
+  owner = postgresql_role.third_rail.name
 }
 
 //// SERVICE ////
@@ -22,6 +36,12 @@ module "third-rail" {
     MARTA_API_KEY         = var.marta_api_key
     TWITTER_CLIENT_ID     = var.third_rail_twitter_client_id
     TWITTER_CLIENT_SECRET = var.third_rail_twitter_client_secret
+
+    DB_HOST     = local.postgres_host
+    DB_PORT     = 5432
+    DB_NAME     = postgresql_database.third_rail.name
+    DB_USERNAME = postgresql_role.third_rail.name
+    DB_PASSWORD = random_password.third_rail_postgres.result
   }
 
   traefik_network_name = docker_network.traefik.id
@@ -43,6 +63,12 @@ module "third-rail-insecure" {
     MARTA_API_KEY         = var.marta_api_key
     TWITTER_CLIENT_ID     = var.third_rail_twitter_client_id
     TWITTER_CLIENT_SECRET = var.third_rail_twitter_client_secret
+
+    DB_HOST     = local.postgres_host
+    DB_PORT     = 5432
+    DB_NAME     = postgresql_database.third_rail.name
+    DB_USERNAME = postgresql_role.third_rail.name
+    DB_PASSWORD = random_password.third_rail_postgres.result
   }
 
   traefik_network_name = docker_network.traefik.id
