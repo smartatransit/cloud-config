@@ -6,7 +6,7 @@ variable "subdomain" {
   type    = string
   default = ""
 }
-variable "smarta_domain" {
+variable "services_domain" {
   type = string
 }
 variable "alternate_domains" {
@@ -47,7 +47,7 @@ locals {
       "traefik.http.routers.${var.name}.entrypoints"               = "web-secure"
       "traefik.http.routers.${var.name}.tls.certResolver"          = "main"
       "traefik.http.services.${var.name}.loadbalancer.server.port" = var.port
-      "traefik.http.routers.${var.name}.tls.domains[0].main"       = "${local.subdomain}.${var.smarta_domain}"
+      "traefik.http.routers.${var.name}.tls.domains[0].main"       = "${local.subdomain}.${var.services_domain}"
       }, {
       for san in var.alternate_domains :
       "traefik.http.routers.${var.name}.tls.domains[0].sans" => "${local.subdomain}.${san}"
