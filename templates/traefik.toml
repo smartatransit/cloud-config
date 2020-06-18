@@ -13,7 +13,7 @@
     swarmMode = true
     exposedByDefault = false
     network = "${network}"
-    defaultRule = "Host(`{{ default .Name (index .Labels \"smarta.subdomain\") }}.${services_domain}`)"
+    defaultRule = "{default_rule}"
   [providers.file]
     watch = true
     filename = "${dynamic_toml_path}"
