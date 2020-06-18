@@ -4,14 +4,16 @@ variable "smarta_domain" {
   default     = "smartatransit.com"
 }
 
-variable "alternate_domains" {
+variable "alternate_base_domains" {
   type        = list(string)
   description = "TLS SANs for the main SMARTA domain"
   default     = ["smartatransit.net"]
 }
 
 locals {
-  services_domain = "services.${var.smarta_domain}"
+  services_domain            = "services.${var.smarta_domain}"
+  alternate_services_domains = [for alt in var.alternate_base_domains : "services.${alt}"]
+
   production_host = "smarta-data.${var.smarta_domain}"
   postgres_host   = local.production_host
   docker_host     = local.production_host

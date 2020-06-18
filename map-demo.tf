@@ -16,6 +16,6 @@ module "map-demo" {
 
   traefik_network_name = docker_network.traefik.id
 
-  smarta_domain     = var.smarta_domain
-  alternate_domains = var.alternate_domains
+  services_domain   = local.services_domain
+  alternate_domains = local.alternate_services_domains
 }
