@@ -13,7 +13,7 @@
     swarmMode = true
     exposedByDefault = false
     network = "${network}"
-    defaultRule = "{default_rule}"
+    defaultRule = "${default_rule}"
   [providers.file]
     watch = true
     filename = "${dynamic_toml_path}"
