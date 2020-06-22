@@ -21,6 +21,13 @@ module "traefik_dynamic_config" {
   destination_dir = var.terraform_host_user_artifacts_root
 }
 
+locals {
+  host_snis = [
+    for domain in local.all_services_domains :
+    "`{{ default .Name (index .Labels \"smarta.subdomain\") }}.${domain}`"
+  ]
+}
+
 module "traefik_config" {
   source = "./modules/host-file"
 
@@ -32,9 +39,10 @@ module "traefik_config" {
 
   vars = {
     lets_encrypt_email = var.lets_encrypt_email
-    services_domain    = local.services_domain
     network            = docker_network.traefik.name
     dynamic_toml_path  = "/traefik.dynamic.toml"
+
+    default_rule = "HostSNI(${join(",", local.host_snis)})"
   }
 }
 

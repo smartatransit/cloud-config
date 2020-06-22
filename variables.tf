@@ -13,6 +13,7 @@ variable "alternate_base_domains" {
 locals {
   services_domain            = "services.${var.smarta_domain}"
   alternate_services_domains = [for alt in var.alternate_base_domains : "services.${alt}"]
+  all_services_domains       = concat([local.services_domain], local.alternate_services_domains)
 
   production_host = "smarta-data.${var.smarta_domain}"
   postgres_host   = local.production_host
