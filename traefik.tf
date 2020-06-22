@@ -24,7 +24,7 @@ module "traefik_dynamic_config" {
 locals {
   host_snis = [
     for domain in local.all_services_domains :
-    "`{{ default .Name (index .Labels \"smarta.subdomain\") }}.${domain}`"
+    "`{{ default .Name (index .Labels \\\"smarta.subdomain\\\") }}.${domain}`"
   ]
 }
 
