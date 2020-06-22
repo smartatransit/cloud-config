@@ -77,7 +77,7 @@ resource "docker_service" "traefik" {
     force_update = module.traefik_config.docker_trigger
 
     container_spec {
-      image = "traefik:v2.0"
+      image = "traefik:v2.2"
 
       mounts {
         target = "/traefik.toml"
