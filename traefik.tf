@@ -42,7 +42,7 @@ module "traefik_config" {
     network            = docker_network.traefik.name
     dynamic_toml_path  = "/traefik.dynamic.toml"
 
-    default_rule = "HostSNI(${join(",", local.host_snis)})"
+    default_rule = "Host(${join(",", local.host_snis)})"
   }
 }
 
