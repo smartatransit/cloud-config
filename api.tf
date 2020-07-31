@@ -14,7 +14,7 @@ module "api-gateway" {
 
   name      = "api-gateway"
   subdomain = "api-gateway"
-  image     = "smartatransit/api-gateway:build-23"
+  image     = "smartatransit/api-gateway:build-27"
   port      = 8080
 
   env = {
