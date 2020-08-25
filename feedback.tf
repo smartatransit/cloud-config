@@ -3,7 +3,7 @@ resource "random_password" "feedback_postgres" {
 }
 
 locals {
-  feedback_build_num = "20"
+  feedback_build_num = "22"
 }
 
 resource "postgresql_role" "feedback" {
