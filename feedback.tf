@@ -6,6 +6,10 @@ locals {
   feedback_build_num = "22"
 }
 
+resource "postgresql_extension" "feedback-pgcrypto" {
+  name     = "pgcrypto"
+  database = postgresql_database.feedback.name
+}
 resource "postgresql_role" "feedback" {
   name     = "feedback"
   login    = true
