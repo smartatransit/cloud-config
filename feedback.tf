@@ -24,7 +24,7 @@ module "feedback" {
   port  = 8080
 
   env = {
-    POSTGRES_URL = "postgres://${postgresql_role.feedback.name}@${local.postgres_host}/${postgresql_database.feedback.name}"
+    POSTGRES_URL = "postgres://${postgresql_role.feedback.name}@${local.postgres_host}/${postgresql_database.feedback.name}?sslmode=disable"
     PGPASSWORD   = random_password.feedback_postgres.result
   }
 
