@@ -39,3 +39,18 @@ module "feedback" {
   services_domain   = local.services_domain
   alternate_domains = local.alternate_services_domains
 }
+
+module "diagnostic" {
+  source = "./modules/service"
+
+  name  = "diagnostic"
+  image = "brndnmtthws/nginx-echo-headers"
+  port  = 8080
+
+  traefik_network_name = docker_network.traefik.id
+
+  gateway_info = local.gateway_info
+
+  services_domain   = local.services_domain
+  alternate_domains = local.alternate_services_domains
+}
