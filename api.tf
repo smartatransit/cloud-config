@@ -36,7 +36,7 @@ locals {
 
     // Traefik will automagically blacklist these from the request and set
     // them based on the repsonse from the gateway.
-    auth_response_headers = "X-Ataper-Auth-Id,X-Ataper-Auth-Session,X-Ataper-Auth-Anonymous,X-Ataper-Auth-Superuser,X-Ataper-Auth-Issuer,X-Ataper-Auth-Phone,X-Ataper-Auth-Email"
+    auth_response_headers = "X-Smarta-Auth-Id,X-Smarta-Auth-Session,X-Smarta-Auth-Anonymous,X-Smarta-Auth-Superuser,X-Smarta-Auth-Issuer,X-Smarta-Auth-Phone,X-Smarta-Auth-Email"
   }
 }
 
